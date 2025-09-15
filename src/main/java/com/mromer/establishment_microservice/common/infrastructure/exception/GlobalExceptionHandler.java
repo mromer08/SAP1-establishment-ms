@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.mromer.establishment_microservice.common.application.exception.EstablishmentNotActiveException;
+import com.mromer.establishment_microservice.common.application.exception.EstablishmentNotFoundException;
+import com.mromer.establishment_microservice.common.application.exception.OfferingNotFoundException;
+
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +24,33 @@ import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler(EstablishmentNotFoundException.class)
+    ProblemDetail handleEstablishmentNotFound(EstablishmentNotFoundException e) {
+        ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
+        pd.setTitle("Establishment Not Found");
+        pd.setProperty("error_category", "Domain");
+        pd.setProperty("timestamp", Instant.now());
+        return pd;
+    }
+
+    @ExceptionHandler(OfferingNotFoundException.class)
+    ProblemDetail handleOfferingNotFound(OfferingNotFoundException e) {
+        ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
+        pd.setTitle("Offering Not Found");
+        pd.setProperty("error_category", "Domain");
+        pd.setProperty("timestamp", Instant.now());
+        return pd;
+    }
+
+    @ExceptionHandler(EstablishmentNotActiveException.class)
+    ProblemDetail handleEstablishmentNotActive(EstablishmentNotActiveException e) {
+        ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, e.getMessage());
+        pd.setTitle("Establishment Not Active");
+        pd.setProperty("error_category", "Domain");
+        pd.setProperty("timestamp", Instant.now());
+        return pd;
+    }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
