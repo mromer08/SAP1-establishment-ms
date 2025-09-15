@@ -1,6 +1,8 @@
 package com.mromer.establishment_microservice.hotel.infrastructure.adapter.in.rest;
 
 import com.mromer.establishment_microservice.common.infrastructure.adapter.in.dto.PagedResponseDTO;
+import com.mromer.establishment_microservice.hotel.application.exception.HotelNotFoundException;
+import com.mromer.establishment_microservice.hotel.application.exception.HotelRoomNotFoundException;
 import com.mromer.establishment_microservice.hotel.application.port.in.*;
 import com.mromer.establishment_microservice.hotel.application.port.in.command.CreateHotelCommand;
 import com.mromer.establishment_microservice.hotel.application.port.in.command.CreateHotelRoomCommand;
@@ -56,7 +58,12 @@ public class HotelController {
         deactivateHotelInputPort.deactivateHotel(id);
         return ResponseEntity.noContent().build();
     }
-    
+
+    @GetMapping("/{id}")
+    public ResponseEntity<HotelResponseDTO> getHotel(@PathVariable UUID id) {
+        Hotel hotel = findHotelInputPort.findById(id).orElseThrow(() -> new HotelNotFoundException(id.toString()));
+        return ResponseEntity.ok(HotelRestMapper.toResponseDTO(hotel));
+    }
 
     @PostMapping("/rooms")
     public ResponseEntity<HotelRoomResponseDTO> createHotelRoom(
@@ -125,4 +132,11 @@ public class HotelController {
         );
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/rooms/{id}")
+    public ResponseEntity<HotelRoomResponseDTO> getHotelRoom(@PathVariable UUID id) {
+        HotelRoom hotelRoom = findHotelRoomInputPort.findById(id).orElseThrow(() -> new HotelRoomNotFoundException(id.toString()));
+        return ResponseEntity.ok(HotelRoomRestMapper.toResponseDTO(hotelRoom));
+    }
+    
 }

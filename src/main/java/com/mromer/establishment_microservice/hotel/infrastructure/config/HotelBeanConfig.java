@@ -38,8 +38,8 @@ public class HotelBeanConfig {
     }
 
     @Bean
-    public CreateHotelRoomInputPort createHotelRoomInputPort(StoreHotelRoomOutputPort storeHotelRoomOutputPort) {
-        return new CreateHotelRoomService(storeHotelRoomOutputPort);
+    public CreateHotelRoomInputPort createHotelRoomInputPort(StoreHotelRoomOutputPort storeHotelRoomOutputPort, FindHotelsOutputPort findHotelsOutputPort) {
+        return new CreateHotelRoomService(storeHotelRoomOutputPort, findHotelsOutputPort);
     }
 
     @Bean
