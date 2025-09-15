@@ -6,9 +6,11 @@ import com.mromer.establishment_microservice.hotel.application.port.out.persiste
 import com.mromer.establishment_microservice.hotel.domain.Hotel;
 
 import org.springframework.data.domain.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
+@Transactional(readOnly = true)
 public class FindHotelService implements FindHotelInputPort {
 
     private final FindHotelsOutputPort findHotelsOutputPort;

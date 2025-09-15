@@ -2,12 +2,15 @@ package com.mromer.establishment_microservice.hotel.application.service;
 
 import java.util.UUID;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.mromer.establishment_microservice.hotel.application.exception.HotelNotFoundException;
 import com.mromer.establishment_microservice.hotel.application.port.in.DeactivateHotelInputPort;
 import com.mromer.establishment_microservice.hotel.application.port.out.persistence.FindHotelsOutputPort;
 import com.mromer.establishment_microservice.hotel.application.port.out.persistence.StoreHotelOutputPort;
 import com.mromer.establishment_microservice.hotel.domain.Hotel;
 
+@Transactional
 public class DeactivateHotelService implements DeactivateHotelInputPort{
     private final FindHotelsOutputPort findHotelsOutputPort;
     private final StoreHotelOutputPort storeHotelOutputPort;
