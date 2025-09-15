@@ -2,11 +2,14 @@ package com.mromer.establishment_microservice.common.domain.offering;
 
 import java.math.BigDecimal;
 
+import com.mromer.establishment_microservice.common.domain.establishment.EstablishmentId;
+
 import static com.mromer.establishment_microservice.common.domain.util.DomainValidationUtils.*;
 
 public class Offering {
 
     private final OfferingId id;
+    private final EstablishmentId establishmentId;
     private final String name;
     private final String description;
     private final BigDecimal productionCost;
@@ -14,10 +17,12 @@ public class Offering {
 
     public Offering(OfferingId id,
                     String name,
+                    EstablishmentId establishmentId,
                     String description,
                     BigDecimal productionCost,
                     BigDecimal salePrice) {
         this.id = requireNonNull(id, "Id");
+        this.establishmentId = requireNonNull(establishmentId, "Establishment Id");
         this.name = requireNotBlank(name, "Name");
         this.description = (description == null) ? "" : description.trim();
         this.productionCost = validatePositive(productionCost, "Production cost");
@@ -28,6 +33,10 @@ public class Offering {
 
     public OfferingId getId() {
         return id;
+    }
+
+    public EstablishmentId getEstablishmentId() {
+        return establishmentId;
     }
 
     public String getName() {
