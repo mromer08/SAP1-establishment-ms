@@ -1,0 +1,148 @@
+@rootUrl = http://localhost:8082
+@contentType = application/json
+
+### Variables para datos de prueba
+@hotelId = 85fbd3b0-2e45-43d0-8fe8-788b98686f9b
+@hotelName = Hotel Paradise
+@hotelNit = 123456789
+
+### 1. Crear un nuevo hotel
+POST {{rootUrl}}/api/v1/hotels
+Content-Type: {{contentType}}
+
+{
+  "name": "{{hotelName}}",
+  "address": "Av. Principal 123",
+  "city": "La Paz",
+  "phoneNumber": "12345678",
+  "email": "info@hotelparadise.com",
+  "nit": "{{hotelNit}}",
+  "hasPool": true,
+  "hasGym": true
+}
+
+### 2. Crear otro hotel
+POST {{rootUrl}}/api/v1/hotels
+Content-Type: {{contentType}}
+
+{
+  "name": "Grand Hotel",
+  "address": "Calle Comercio 456",
+  "city": "Cochabamba",
+  "phoneNumber": "87654321",
+  "email": "reservas@grandhotel.com",
+  "nit": "987654321",
+  "hasPool": false,
+  "hasGym": true
+}
+
+### 3. Obtener todos los hoteles (sin filtros)
+GET {{rootUrl}}/api/v1/hotels?page=0&size=10
+Accept: {{contentType}}
+
+### 4. Obtener hoteles filtrados por ciudad
+GET {{rootUrl}}/api/v1/hotels?city=La Paz&page=0&size=10
+Accept: {{contentType}}
+
+### 5. Obtener hoteles con piscina
+GET {{rootUrl}}/api/v1/hotels?hasPool=false&page=0&size=10
+Accept: {{contentType}}
+
+### 6. Obtener hoteles inactivos
+GET {{rootUrl}}/api/v1/hotels?active=false&page=0&size=10
+Accept: {{contentType}}
+
+### 7. Crear una habitación de hotel
+POST {{rootUrl}}/api/v1/hotels/rooms
+Content-Type: {{contentType}}
+
+{
+  "name": "Habitación Standard",
+  "description": "Habitación cómoda con cama queen size",
+  "productionCost": 25.00,
+  "salePrice": 50.00,
+  "capacity": 2,
+  "hasTV": true,
+  "hotelId": "85fbd3b0-2e45-43d0-8fe8-788b98686f9b"
+}
+
+### 8. Crear una suite presidencial
+POST {{rootUrl}}/api/v1/hotels/rooms
+Content-Type: {{contentType}}
+
+{
+  "name": "Suite Presidencial",
+  "description": "Suite de lujo con jacuzzi y vista panorámica",
+  "productionCost": 60.00,
+  "salePrice": 120.00,
+  "capacity": 2,
+  "hasTV": true,
+  "hotelId": "{{hotelId}}"
+}
+
+### 9. Crear habitación familiar
+POST {{rootUrl}}/api/v1/hotels/rooms
+Content-Type: {{contentType}}
+
+{
+  "name": "Habitación Familiar",
+  "description": "Amplia habitación para 4 personas",
+  "productionCost": 35.00,
+  "salePrice": 70.00,
+  "capacity": 4,
+  "hasTV": true,
+  "hotelId": "{{hotelId}}"
+}
+
+### 10. Obtener todas las habitaciones (sin filtros)
+GET {{rootUrl}}/api/v1/hotels/rooms?page=0&size=10
+Accept: {{contentType}}
+
+### 11. Obtener habitaciones por rango de precio
+GET {{rootUrl}}/api/v1/hotels/rooms?minSalePrice=40&maxSalePrice=100&page=0&size=10
+Accept: {{contentType}}
+
+### 12. Obtener habitaciones con capacidad mínima
+GET {{rootUrl}}/api/v1/hotels/rooms?minCapacity=3&page=0&size=10
+Accept: {{contentType}}
+
+### 13. Obtener habitaciones con TV
+GET {{rootUrl}}/api/v1/hotels/rooms?hasTV=true&page=0&size=10
+Accept: {{contentType}}
+
+### 14. Obtener habitaciones por nombre
+GET {{rootUrl}}/api/v1/hotels/rooms?name=Suite&page=0&size=10
+Accept: {{contentType}}
+
+### 15. Desactivar un hotel
+DELETE {{rootUrl}}/api/v1/hotels/{{hotelId}}
+
+### 16. Obtener hoteles después de desactivar uno
+GET {{rootUrl}}/api/v1/hotels?active=true&page=0&size=10
+Accept: {{contentType}}
+
+### 17. Intentar crear habitación en hotel desactivado (debería fallar)
+POST {{rootUrl}}/api/v1/hotels/rooms
+Content-Type: {{contentType}}
+
+{
+  "name": "Habitación Test",
+  "description": "Habitación de prueba",
+  "productionCost": 20.00,
+  "salePrice": 40.00,
+  "capacity": 2,
+  "hasTV": true,
+  "hotelId": "{{hotelId}}"
+}
+
+### 18. Obtener habitaciones con múltiples filtros
+GET {{rootUrl}}/api/v1/hotels/rooms?minSalePrice=50&maxSalePrice=150&minCapacity=2&hasTV=true&page=0&size=10
+Accept: {{contentType}}
+
+### 19. Probando paginación - Página 2
+GET {{rootUrl}}/api/v1/hotels/rooms?page=1&size=2
+Accept: {{contentType}}
+
+### 20. Probando ordenamiento - Ordenar por precio descendente
+GET {{rootUrl}}/api/v1/hotels/rooms?page=0&size=10&sort=salePrice,desc
+Accept: {{contentType}}
